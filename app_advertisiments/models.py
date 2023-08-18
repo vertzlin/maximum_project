@@ -1,7 +1,6 @@
 from django.db import models
-
-
-
+from django.contrib import admin
+from django.utils import timezone
 
 
 
@@ -18,5 +17,14 @@ class Advertisements(models.Model):
         return f"Advertisements(id={self.id}, title={self.title}, price={self.price})"
 
 
-    class Meta:
-        db_table = 'advertisements'
+    @admin.display(description="Дата создания")
+    def created_data(self):
+        if self.created_at.date() == timezone.now().date():
+            created_time = self.created_at.time().strftime('%H:%M:%S')
+            return 'Сегодня в ' + str(created_time)
+        else:
+            return self.created_at.strftime('%d.%m.%Y в %H:%M:%S')
+
+
+class Meta:
+    db_table = 'advertisements'
