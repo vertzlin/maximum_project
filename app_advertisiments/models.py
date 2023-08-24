@@ -18,12 +18,21 @@ class Advertisements(models.Model):
 
 
     @admin.display(description="Дата создания")
-    def created_data(self):
+    def created_date(self):
         if self.created_at.date() == timezone.now().date():
             created_time = self.created_at.time().strftime('%H:%M:%S')
             return 'Сегодня в ' + str(created_time)
         else:
             return self.created_at.strftime('%d.%m.%Y в %H:%M:%S')
+
+    @admin.display(description="дата последнего объявления")
+    def updated_date(self):
+        from django.utils import timezone
+        if self.updated_at.date() == timezone.now().date():
+            created_time = self.updated_at.time().strftime('%H:%M:%S')
+            return 'Сегодня в ' + str(created_time)
+        else:
+            return self.updated_at.strftime('%d.%m.%Y в %H:%M:%S')
 
 
 class Meta:
