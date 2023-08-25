@@ -1,16 +1,20 @@
 from django.shortcuts import render, redirect
 from .models import Advertisements
 from .forms import AdvertisementForm
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
+from django.contrib.auth.decorators import login_required
+
+
+@login_required(login_url=reverse_lazy('login'))
 
 
 def index(request):
     advertisiments = Advertisements.objects.all()
     context = {'advertisiments': advertisiments}
-    return render(request, 'index.html', context)
+    return render(request, 'app_advertisiments/index.html', context)
 
 def top_sellers(request):
-    return render(request, 'top-sellers.html')
+    return render(request, 'app_advertisiments/top-sellers.html')
 
 
 def advertisement_post(request):
@@ -25,4 +29,4 @@ def advertisement_post(request):
     else:
         form = AdvertisementForm
     context = {'form': form}
-    return render(request, 'advertisement-post.html', context)
+    return render(request, 'app_advertisiments/advertisement-post.html', context)
